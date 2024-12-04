@@ -2,17 +2,18 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.PropertyReader;
 
 import java.time.Duration;
 
 public abstract class BasePage {
 
-    public static final String BASE_URL = "https://www.saucedemo.com/";
+    String BASE_URL = PropertyReader.getProperty("SmartQA.url");
     WebDriver driver;
     WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 }

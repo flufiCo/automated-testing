@@ -1,59 +1,54 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
 
     private final By USERNAME_INPUT = By.id("user-name");
-    private final By PASSWORD_INPUT = By.id("password");
-    private final By LOGIN_INPUT = By.id("login-button");
+    private final By PASSWORD_INPUT = By.id("password"); // Исправлено название переменной
+    private final By LOGIN_BUTTON = By.id("login-button");
     private final By ERROR_MESSAGE = By.cssSelector("h3");
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
-    public void open() {
+    @Step("Открытие браузера")
+    public LoginPage open() { // Возвращаем текущий объект для цепочки вызовов
         driver.get(BASE_URL);
+        return this;
     }
 
-    public void login(String user, String password) {
-        fullUserInput(user);
-        fullPasswordInput(password);
-        clickSubmBtn();
-        if (isErrorMessagePresent()) {
-            getErrorMessage();
-        } else {
-        }
+    @Step("Вводим данные {user} и {password}")
+    public LoginPage login(String user, String password) { // Возвращаем текущий объект
+        fillUserInput(user);
+        fillPasswordInput(password);
+        clickSubmitBtn();
+        return this;
     }
 
-    public void fullUserInput(String user) {
+    @Step("Вводим данные {user} в поле логина")
+    public LoginPage fillUserInput(String user) { // Возвращаем текущий объект
         driver.findElement(USERNAME_INPUT).sendKeys(user);
+        return this;
     }
 
-    public void fullPasswordInput(String password) {
+    @Step("Вводим {password} в поле пароля")
+    public LoginPage fillPasswordInput(String password) { // Возвращаем текущий объект
         driver.findElement(PASSWORD_INPUT).sendKeys(password);
+        return this;
     }
 
-    public void clickSubmBtn() {
-        driver.findElement(LOGIN_INPUT).submit();
+    @Step("Нажимаем кнопку авторизации")
+    public LoginPage clickSubmitBtn() { // Возвращаем текущий объект
+        driver.findElement(LOGIN_BUTTON).click(); // Исправлено на click()
+        return this;
     }
 
-    public boolean isErrorMessagePresent() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(ERROR_MESSAGE));
-            return true;
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
-
+    @Step("Получаем текст из сообщения об ошибке")
     public String getErrorMessage() {
-        WebElement errorElement = driver.findElement(ERROR_MESSAGE);
-        return errorElement.getText();
+        return driver.findElement(ERROR_MESSAGE).getText();
     }
 }
