@@ -47,9 +47,6 @@ public class BaseTest {
     @AfterMethod
     @Description("Закрытие")
     public void close(ITestResult result) {
-      /*  if (ITestResult.FAILURE == result.getStatus()) {
-            AllureUtils.takeScreenshot(driver);
-        }*/
         driver.quit();
     }
 }

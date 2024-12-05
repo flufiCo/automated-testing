@@ -56,7 +56,7 @@ public class LoginTest extends BaseTest {
                 "Epic sadface: Sorry, this user has been locked out.");
     }
 
-    @Test(enabled = false)
+    @Test(enabled = true)
     public void problemUserInputCheck() {
         loginPage
                 .open()

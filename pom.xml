@@ -15,6 +15,7 @@
         <selenium-java>4.21.0</selenium-java>
         <webdrivermanager>5.9.2</webdrivermanager>
         <allure-testng>2.13.9</allure-testng>
+        <allure-maven>2.10.0</allure-maven>
     </properties>
 
     <dependencies>
@@ -40,7 +41,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.36</version> <!-- или актуальная версия -->
+            <version>1.7.36</version>
         </dependency>
 
         <dependency>
@@ -73,7 +74,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.10.0</version>
+                <version>${allure-maven}</version>
             </plugin>
         </plugins>
     </build>

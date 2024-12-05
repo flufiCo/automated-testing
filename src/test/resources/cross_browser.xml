@@ -5,7 +5,6 @@
         <classes>
             <class name="tests.LoginTest"/>
             <parameter name="browser" value="chrome"></parameter>
-
         </classes>
     </test> <!-- Test -->
     <test name="Edge">
