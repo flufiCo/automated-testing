@@ -15,7 +15,7 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    @Step("Открытие браузера")
+    @Step("Открытие страницы авторизации в браузере")
     public LoginPage open() {
         driver.get(BASE_URL);
         return this;
@@ -51,5 +51,6 @@ public class LoginPage extends BasePage {
     public String getErrorMessage() {
         return driver.findElement(ERROR_MESSAGE).getText();
     }
+
 }
 
