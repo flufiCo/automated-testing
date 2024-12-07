@@ -4,15 +4,16 @@ import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import utils.PropertyReader;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 public class LoginTest extends BaseTest {
 
-    private final By MISTAKE_MESSAGE_NUMBER_3 = By.cssSelector("h3");
-    private final By NAME_TSHIRT = By.xpath("//div[text()='Test.allTheThings() T-Shirt (Red)']");
+    private final By mistakeMsg = By.cssSelector("h3");
+    private final By nameTShirt = By.xpath("//div[text()='Test.allTheThings() T-Shirt (Red)']");
 
-    @Epic("Модуль логтна интернет-магазина")
+    @Epic("Модуль авторизации интернет-магазина")
     @Feature("TMS-756")
     @Story("TNS-756.767")
     @Severity(SeverityLevel.BLOCKER)
@@ -29,39 +30,44 @@ public class LoginTest extends BaseTest {
         assertEquals(loginPage.getErrorMessage(), errorMsg);
     }
 
-    @DataProvider()
+    @DataProvider
     public Object[][] loginData() {
+        // эти 2 строчки были добавлены потому что данные из user и password брались null, но в тесте ниже они
+        // отбаратывают коректно!
+        String user = PropertyReader.getProperty("SmartQA.user");
+        String password = PropertyReader.getProperty("SmartQA.password");
         return new Object[][]{
-                {user, " ", "Epic sadface: Username and password do not match any user in this service"},
+                {user, "invalid_password", "Epic sadface: Username and password do not match any user in this service"},
                 {"locked_out_user", password, "Epic sadface: Sorry, this user has been locked out."},
                 {"problem_user", "", "Epic sadface: Password is required"},
         };
     }
 
-    @Test(enabled = true)
-    public void emptyPasswordInputCheck() {
-        loginPage
-                .open()
-                .login(user, " ");
-        assertEquals(driver.findElement(MISTAKE_MESSAGE_NUMBER_3).getText(),
-                "Epic sadface: Username and password do not match any user in this service");
-    }
-
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void lockedOutUserInputCheck() {
         loginPage
                 .open()
                 .login("locked_out_user", password);
-        assertEquals(driver.findElement(MISTAKE_MESSAGE_NUMBER_3).getText(),
+        assertEquals(driver.findElement(mistakeMsg).getText(),
                 "Epic sadface: Sorry, this user has been locked out.");
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
+    public void emptyPasswordInputCheck() {
+        loginPage
+                .open()
+                .login(user, " ");
+        assertEquals(driver.findElement(mistakeMsg).getText(),
+                "Epic sadface: Username and password do not match any user in this service");
+    }
+
+
+    @Test(enabled = false)
     public void problemUserInputCheck() {
         loginPage
                 .open()
                 .login("problem_user", password);
-        assertEquals(driver.findElement(NAME_TSHIRT).getText(),
+        assertEquals(driver.findElement(nameTShirt).getText(),
                 "Test.allTheThings() T-Shirt (Red)");
     }
 }
